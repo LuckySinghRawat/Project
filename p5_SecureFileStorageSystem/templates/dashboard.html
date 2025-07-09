@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Secure File Storage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #0f0c29);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: #fff;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h2, h3 {
+      text-align: center;
+      color: #00ffff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+      border: 1px solid rgba(0, 255, 255, 0.4);
+      backdrop-filter: blur(5px);
+    }
+
+    .upload-section {
+      text-align: center;
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+      padding-bottom: 30px;
+    }
+
+    input[type="file"] {
+      font-family: 'Orbitron', sans-serif;
+      border: 1px solid rgba(0, 255, 255, 0.5);
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 450px;
+      margin-top: 15px;
+    }
+
+    /* Custom file input button style */
+    input[type="file"]::file-selector-button {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(45deg, #00ffff, #007bff);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    input[type="file"]::file-selector-button:hover {
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+    }
+
+    button {
+      width: 200px;
+      background: linear-gradient(45deg, #00ffff, #007bff);
+      color: white;
+      padding: 12px;
+      margin-top: 25px;
+      font-size: 16px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+    }
+    
+    button:hover {
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+      transform: translateY(-2px);
+    }
+
+    .nav-links {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .nav-links a {
+      display: inline-block;
+      background: rgba(0, 255, 255, 0.1);
+      border: 1px solid rgba(0, 255, 255, 0.5);
+      color: #00ffff;
+      padding: 12px 20px;
+      text-decoration: none;
+      border-radius: 8px;
+      margin: 8px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+    }
+
+    .nav-links a:hover {
+      background: rgba(0, 255, 255, 0.3);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+    }
+
+    .nav-links a.logout {
+      border-color: rgba(255, 0, 128, 0.5);
+      color: #ff0080;
+    }
+    
+    .nav-links a.logout:hover {
+      background: rgba(255, 0, 128, 0.3);
+      box-shadow: 0 0 15px rgba(255, 0, 128, 0.6);
+    }
+
+    .nav-links a.admin-only {
+      border-color: rgba(255, 165, 0, 0.5);
+      color: #ffa500;
+    }
+    
+    .nav-links a.admin-only:hover {
+      background: rgba(255, 165, 0, 0.3);
+      box-shadow: 0 0 15px rgba(255, 165, 0, 0.6);
+    }
+
+    .note {
+      color: rgba(255,255,255,0.6);
+      font-style: italic;
+      text-align: center;
+    }
+
+    .flash-messages {
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .flash {
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      border: 1px solid;
+      opacity: 0.9;
+      margin-bottom: 10px;
+    }
+
+    .flash.success {
+      background-color: rgba(0, 255, 128, 0.2);
+      border-color: rgba(0, 255, 128, 0.5);
+      color: #00ff80;
+    }
+
+    .flash.danger {
+      background-color: rgba(255, 0, 128, 0.2);
+      border-color: rgba(255, 0, 128, 0.5);
+      color: #ff0080;
+    }
+
+    .flash.info {
+      background-color: rgba(0, 255, 255, 0.2);
+      border-color: rgba(0, 255, 255, 0.5);
+      color: #00ffff;
+    }
+  </style>
+</head>
+<body>
+  {%- with messages = get_flashed_messages(with_categories=true) -%}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {%- endwith -%}
+  <h2>Welcome, {{ username }} (Role: {{ role }})</h2>
+  
+  <div class="container">
+    {% if role == 'Admin' %}
+      <div class="upload-section">
+        <h3>Upload a File</h3>
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+          <input type="file" name="file" required />
+          <br />
+          <button type="submit">Upload</button>
+        </form>
+      </div>
+    {% else %}
+      <p class="note">You do not have permission to upload files.</p>
+    {% endif %}
+    
+    <div class="nav-links">
+      <a href="{{ url_for('files') }}">View Uploaded Files</a>
+      {% if role == 'Admin' %}
+      <a href="{{ url_for('user_management') }}" class="admin-only">Manage Users</a>
+      {% endif %}
+      <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+    </div>
+  </div>
+</body>
+</html>
